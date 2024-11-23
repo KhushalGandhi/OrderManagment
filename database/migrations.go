@@ -1,8 +1,8 @@
 package database
 
 import (
+	"OrderManagment/models"
 	"log"
-	"order-inventory-management/models"
 
 	"gorm.io/gorm"
 )

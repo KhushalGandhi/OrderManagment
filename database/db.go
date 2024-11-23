@@ -1,8 +1,8 @@
 package database
 
 import (
+	"OrderManagment/config"
 	"fmt"
-	"order-inventory-management/config"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

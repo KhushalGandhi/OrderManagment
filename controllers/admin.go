@@ -3,6 +3,7 @@ package controllers
 import (
 	"OrderManagment/models"
 	"OrderManagment/services"
+	"github.com/gofiber/fiber/v2"
 )
 
 var productService *services.ProductService

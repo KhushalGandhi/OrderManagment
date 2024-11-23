@@ -1,10 +1,11 @@
 package main
 
 import (
+	"OrderManagment/config"
+	"OrderManagment/database"
+	"OrderManagment/routes"
+	"github.com/gofiber/fiber/v2"
 	"log"
-	"order-inventory-management/config"
-	"order-inventory-management/database"
-	"order-inventory-management/routes"
 )
 
 func main() {

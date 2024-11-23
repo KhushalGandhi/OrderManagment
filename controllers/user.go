@@ -3,6 +3,7 @@ package controllers
 import (
 	"OrderManagment/models"
 	"OrderManagment/services"
+	"github.com/gofiber/fiber/v2"
 )
 
 var orderService *services.OrderService
@@ -23,7 +24,7 @@ func CreateOrder(c *fiber.Ctx) error {
 }
 
 func GetUserOrders(c *fiber.Ctx) error {
-	userID := c.Params("user_id")
+	userID := c.Params("user_id").(uint)
 	// Assuming we can convert userID into uint here
 	// Additional error checking needed
 	orders, err := orderService.GetOrdersByUserID(userID)
