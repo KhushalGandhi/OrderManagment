@@ -20,3 +20,7 @@ func (s *InventoryService) UpdateInventory(inventory *models.Inventory) error {
 func (s *InventoryService) GetInventoryByProductID(productID uint) (*models.Inventory, error) {
 	return s.repo.GetInventoryByProductID(productID)
 }
+
+func (s *ProductService) SearchProducts(query, category string, limit, offset int) ([]models.Product, error) {
+	return s.repo.SearchProducts(query, category, limit, offset)
+}

@@ -30,3 +30,27 @@ func GetAllProducts(c *fiber.Ctx) error {
 	}
 	return c.JSON(products)
 }
+
+func GetOrderStatistics(c *fiber.Ctx) error {
+	startDate := c.Query("start_date", "")
+	endDate := c.Query("end_date", "")
+
+	stats, err := orderService.GetOrderStatistics(startDate, endDate)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to retrieve statistics"})
+	}
+	return c.JSON(stats)
+}
+
+func GetFilteredOrders(c *fiber.Ctx) error {
+	userID := c.Query("user_id", "")
+	productID := c.Query("product_id", "")
+	sortBy := c.Query("sort_by", "created_at")
+	order := c.Query("order", "asc")
+
+	orders, err := orderService.GetFilteredOrders(userID, productID, sortBy, order)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to retrieve orders"})
+	}
+	return c.JSON(orders)
+}

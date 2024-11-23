@@ -24,3 +24,7 @@ func (s *ProductService) GetAllProducts() ([]models.Product, error) {
 func (s *ProductService) UpdateProduct(product *models.Product) error {
 	return s.repo.UpdateProduct(product)
 }
+
+func (s *OrderService) GetOrderStatistics(startDate, endDate string) (map[string]interface{}, error) {
+	return s.repo.GetOrderStatistics(startDate, endDate)
+}
