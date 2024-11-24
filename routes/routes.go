@@ -10,8 +10,8 @@ func SetupRoutes(app *fiber.App) {
 	api := app.Group("/api")
 
 	// User routes
-	api.Post("/signup", controllers.Signup)
-	api.Post("/login", controllers.Login)
+	api.Post("/signup", controllers.Signup) // done
+	api.Post("/login", controllers.Login)   // done
 	api.Post("/product/search", controllers.SearchProducts)
 	api.Post("/product/view", controllers.ViewProducts) // there will be some kind of pagination
 	api.Post("/place", controllers.CreateOrder)         // placing orders

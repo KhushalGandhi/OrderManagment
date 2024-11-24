@@ -1,12 +1,19 @@
 package repositories
 
-import "OrderManagment/models"
+import (
+	"OrderManagment/models"
+	"gorm.io/gorm"
+)
 
-func CreateUser(user *models.User) error {
+type UserRepository struct {
+	db *gorm.DB
+}
+
+func (p *UserRepository) CreateUser(user *models.User) error {
 	return repo.db.Create(user).Error
 }
 
-func GetUserByEmail(email string) (*models.User, error) {
+func (p *UserRepository) GetUserByEmail(email string) (*models.User, error) {
 	var user models.User
 	err := repo.db.Where("email = ?", email).First(&user).Error
 	return &user, err

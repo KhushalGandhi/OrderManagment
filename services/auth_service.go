@@ -2,13 +2,16 @@ package services
 
 import (
 	"OrderManagment/models"
+	"OrderManagment/repositories"
+	"OrderManagment/utils"
 	"errors"
 	"golang.org/x/crypto/bcrypt"
+	"time"
 )
 
-func Signup(user *models.User) error {
+func Signup(user *models.SignUpRequest) error {
 	// Check if the user already exists
-	existingUser, err := repostories.GetUserByEmail(user.Email)
+	existingUser, err := repositories.GetUserByEmail(user.Email)
 	if err == nil && existingUser.ID != 0 {
 		return errors.New("email already in use")
 	}
@@ -18,15 +21,22 @@ func Signup(user *models.User) error {
 	if err != nil {
 		return err
 	}
-	user.Password = string(hashedPassword)
+	//user.Password = string(hashedPassword)
+
+	baseModel := models.User{
+		Name:      user.Name,
+		Email:     user.Email,
+		Password:  string(hashedPassword),
+		CreatedAt: time.Time{},
+	}
 
 	// Save the user
-	return s.repo.CreateUser(user)
+	return repositories.CreateUser(&baseModel)
 }
 
 func Login(email, password string) (string, error) {
 	// Get the user by email
-	user, err := s.repo.GetUserByEmail(email)
+	user, err := repositories.GetUserByEmail(email)
 	if err != nil || user.ID == 0 {
 		return "", errors.New("invalid email or password")
 	}
@@ -38,7 +48,7 @@ func Login(email, password string) (string, error) {
 	}
 
 	// Generate JWT token
-	token, err := generateJWT(user.ID)
+	token, err := utils.GenerateJWT(user.ID)
 	if err != nil {
 		return "", err
 	}

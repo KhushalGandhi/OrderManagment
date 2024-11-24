@@ -7,7 +7,7 @@ import (
 )
 
 func Signup(c *fiber.Ctx) error {
-	var user models.Customer
+	var user models.SignUpRequest
 	if err := c.BodyParser(&user); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request payload"})
 	}
@@ -26,7 +26,7 @@ func Login(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request payload"})
 	}
 
-	token, err := authService.Login(credentials.Email, credentials.Password)
+	token, err := services.Login(credentials.Email, credentials.Password)
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": err.Error()})
 	}

@@ -11,11 +11,17 @@ type Customer struct {
 }
 
 type User struct {
-	ID        uint   `json:"id" gorm:"primaryKey"`
-	Name      string `json:"name"`
-	Email     string `json:"email" gorm:"uniqueIndex"`
-	Password  string `json:"-"`
-	CreatedAt time.Time
+	ID        uint      `json:"id" gorm:"autoIncrement;primaryKey"`
+	Name      string    `gorm:"name" json:"name"`
+	Email     string    `json:"email" gorm:"email;uniqueIndex"`
+	Password  string    `gorm:"password" json:"password"`
+	CreatedAt time.Time `gorm:"created_at" json:"created_at"`
+}
+
+type SignUpRequest struct {
+	Name     string `json:"name"`
+	Email    string `json:"email" `
+	Password string `json:"password"`
 }
 
 type LoginRequest struct {

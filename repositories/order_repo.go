@@ -41,16 +41,27 @@ func (repo *OrderRepository) GetOrderStatistics(startDate, endDate string) (map[
 	var totalOrders int64
 	var totalRevenue float64
 
-	tx := repo.db.Model(&models.Order)
+	// Count total orders
+	tx := repo.db.Model(&models.Order{})
 	if startDate != "" && endDate != "" {
 		tx = tx.Where("created_at BETWEEN ? AND ?", startDate, endDate)
 	}
-
-	err := tx.Count(&totalOrders).Select("SUM(total_amount) as total_revenue").Scan(&totalRevenue).Error
+	err := tx.Count(&totalOrders).Error
 	if err != nil {
 		return nil, err
 	}
 
+	// Calculate total revenue
+	tx = repo.db.Model(&models.Order{})
+	if startDate != "" && endDate != "" {
+		tx = tx.Where("created_at BETWEEN ? AND ?", startDate, endDate)
+	}
+	err = tx.Select("SUM(total_amount)").Scan(&totalRevenue).Error
+	if err != nil {
+		return nil, err
+	}
+
+	// Compile stats
 	stats := map[string]interface{}{
 		"total_orders":  totalOrders,
 		"total_revenue": totalRevenue,

@@ -25,7 +25,7 @@ func (repo *ProductRepository) GetProducts() ([]models.Product, error) {
 
 func (repo *ProductRepository) ViewProducts(category string, limit, offset int) ([]models.Product, error) {
 	var products []models.Product
-	tx := repo.db.Model(&models.Product)
+	tx := repo.db.Model(&models.Product{}) // Use the type correctly here.
 
 	if category != "" {
 		tx = tx.Where("category = ?", category)
@@ -40,7 +40,7 @@ func (repo *ProductRepository) UpdateProduct(product *models.Product) error {
 
 func (repo *ProductRepository) SearchProducts(query, category string, limit, offset int) ([]models.Product, error) {
 	var products []models.Product
-	tx := repo.db.Model(models.Product)
+	tx := repo.db.Model(&models.Product{}) // Use a pointer to the model.
 
 	if query != "" {
 		tx = tx.Where("name ILIKE ?", "%"+query+"%")
