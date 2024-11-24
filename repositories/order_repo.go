@@ -17,9 +17,9 @@ func (repo *OrderRepository) CreateOrder(order *models.Order) error {
 	return repo.db.Create(order).Error
 }
 
-func (repo *OrderRepository) GetOrdersByUserID(userID uint) ([]models.Order, error) {
+func (repo *OrderRepository) ViewUserOrders(userID string) ([]models.Order, error) {
 	var orders []models.Order
-	err := repo.db.Where("customer_id = ?", userID).Find(&orders).Error
+	err := repo.db.Preload("Products").Where("customer_id = ?", userID).Find(&orders).Error
 	return orders, err
 }
 

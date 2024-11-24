@@ -37,13 +37,27 @@ func CreateOrder(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(order)
 }
 
-func GetUserOrders(c *fiber.Ctx) error {
-	userID := c.Params("user_id").(uint)
-	// Assuming we can convert userID into uint here
-	// Additional error checking needed
-	orders, err := orderService.GetOrdersByUserID(userID)
+func ViewUserOrders(c *fiber.Ctx) error {
+	userID := c.Query("user_id", "")
+	if userID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "User ID is required"})
+	}
+
+	orders, err := orderService.ViewUserOrders(userID)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to fetch orders"})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to retrieve orders"})
 	}
 	return c.JSON(orders)
+}
+
+func ViewProducts(c *fiber.Ctx) error {
+	category := c.Query("category", "")
+	limit := c.QueryInt("limit", 10)
+	offset := c.QueryInt("offset", 0)
+
+	products, err := productService.ViewProducts(category, limit, offset)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to fetch products"})
+	}
+	return c.JSON(products)
 }
